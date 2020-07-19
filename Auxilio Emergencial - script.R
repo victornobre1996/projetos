@@ -1,0 +1,1 @@
+# codigo para artigo sobre auxilio emergencial 
