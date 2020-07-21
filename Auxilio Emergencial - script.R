@@ -52,6 +52,17 @@ dados.df <- data.frame(term = names(dados.freq) , freq = dados.freq)
 
 wordcloud(dados.df$term, dados.df$freq,  min.freq = 5, max.words = 200,random.order = F, colors = brewer.pal(8, 'Dark2'))
 
-dados1 <- dados.df %>% filter(dados.df$freq > 100)
+install.packages("igraph")
+library(igraph)
 
-wordcloud(dados1$term, dados1$freq,  min.freq = 5, max.words = 30,random.order = F, colors = brewer.pal(8, 'Dark2'))
+matriz1 <- as.matrix(dados.df)
+
+g <- graph_from_incidence_matrix(matriz1)
+p <- bipartite_projection(g, which = "FALSE")
+V(p)$shape = "none"
+deg <- degree(p)
+p <- delete_vertices(p, 'caixatemnaofunciona')
+
+plot(p, vertex.label.cex = deg/20 , edge.width = (E(p)$weight)/100,
+     edge.color = adjustcolor("grey60", .5),
+     vertex.label.color = adjustcolor("#005d26", .7))
